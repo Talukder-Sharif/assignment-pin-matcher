@@ -12,13 +12,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input class="form-control" type="text">
-                    <button class="generate-btn">Generate Pin</button>
+                    <input class="form-control" type="text" id ="generateBox">
+                    <button class="generate-btn" onclick="generateButtonPress()">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input class="form-control" type="text">
+                    <input class="form-control" type="text" id ="result">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
@@ -37,42 +37,99 @@
                               <div class="button">3</div>
                             </div>
                             <div class="calc-button-row">
-                                <div class="button"><</div>
+                                <!-- <div class="button" ><</div> -->
+                                <input type="button" class="button" onclick="back()" value="<"/>
                                 <div class="button">0</div>
                                 <div class="button">C</div>
                             </div>
                             <div>
-                                <button type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <button type="submit" class="submit-btn" id="submit_button" onclick="checkSubmission()">Submit</button>
+                                <p class="action-left" id = "warning" >3 try left</p>
                             </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="notify-section">
-            <p class="notify">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            <p class="notify" id ="wrong">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify" id ="right">✅ Pin Matched... Secret door is opening for you</p>
         </div>
     </div>
 
 
     <script>
+        let x = 3;
+        // document.getElementsByClassName("button")[0].addEventListener("click", function(eid){
+            var number = document.getElementsByClassName("button");
+            var res = document.getElementById("result");
+        for (let i = 0; i < number.length; i++) {
+            number[i].addEventListener("click", function(asd){
+        //alert(asd.target.innerText);
+     //   console.log(res,asd.target.innerText);
+     if(asd.target.innerText == 'C')
+     {
+         res.value = '';
+     }
+     else{
+         if(asd.target.innerText == '<')
+         {
+            // res.value = res.value.slice(0,-1);
+         
+         }
+        res.value += asd.target.innerText;
 
-        // document.getElementsByClassName("button").addEventListener("click", function(){
+     }
+            })
+        }
 
+            
+       function back()
+       {
+           //alert('back clicked');
+          var  res2 = document.getElementById("result").value.slice(0,-1);
+          document.getElementById("result").value = res2;
+       }
+       
+           
+       function generateButtonPress()
+       {
+           var randomNumber = Math.floor(1000 + (9000-0)*Math.random())
+           var generateTextBox = document.getElementById("generateBox");
+            generateTextBox.value = randomNumber;
+       }
         // })
 
-        var number = document.getElementsByClassName("button");
-        for (let i = 0; i < number.length; i++) {
-            number[i].addEventListener("click", function(){
-                var output = reverseNumberFormat(getOutput());
-                if(output = NaN)
-                output = output + this.id;
-                printOutput(outPut);
-            })
-            
-        }
-            
+       function checkSubmission()
+       {
+           
+           if(document.getElementById("generateBox").value == document.getElementById("result").value)
+           {
+               //alert('Matched');
+               document.getElementById("right").style.display = "block";
+               document.getElementById("wrong").style.display = "none";
+               document.getElementById("warning").style.display = "none";
+           }
+           else
+           {
+               //alert('Not Matched');
+               document.getElementById("wrong").style.display = "block";
+               document.getElementById("right").style.display = "none";
+                x--;
+                if(x==0)
+                {
+                    document.getElementById("submit_button").disabled =  true;
+                    alert("You have reached 3 try");
+                }
+                document.getElementById("warning").innerHTML = ""+x+" try left";
+           }
+
+           
+       }
+        
+        //DONE
+
+          
+        
         
     </script>
 </body>
